@@ -1,0 +1,221 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+// prisma/schema.prisma
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+    // uncomment next line if you use Prisma <5.10
+    // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+// Task Manager Enums
+enum TaskStatus {
+    TODO
+    IN_PROGRESS
+    IN_REVIEW
+    DONE
+}
+
+enum Priority {
+    LOW
+    MEDIUM
+    HIGH
+    URGENT
+}
+
+enum MemberRole {
+    OWNER
+    ADMIN
+    MEMBER
+    VIEWER
+}
+
+// Task Manager Models
+
+model Project {
+    id          String   @id @default(cuid())
+    name        String
+    description String?
+    color       String?  @default("#3B82F6") // Hex color for project theming
+    isArchived  Boolean  @default(false)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    // Relations
+    ownerId    String
+    owner      User            @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+    tasks      Task[]
+    categories Category[]
+    members    ProjectMember[]
+
+    @@index([ownerId])
+    @@index([isArchived])
+}
+
+model Category {
+    id          String   @id @default(cuid())
+    name        String
+    color       String?  @default("#6B7280") // Hex color for category theming
+    description String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    // Relations
+    projectId String
+    project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    tasks     Task[]
+
+    @@index([projectId])
+}
+
+model Task {
+    id          String     @id @default(cuid())
+    title       String
+    description String?
+    status      TaskStatus @default(TODO)
+    priority    Priority   @default(MEDIUM)
+    dueDate     DateTime?
+    completedAt DateTime?
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+
+    // Relations
+    projectId   String
+    project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    categoryId  String?
+    category    Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+    assignees   TaskAssignee[]
+    comments    Comment[]
+    attachments Attachment[]
+    createdById String
+    createdBy   User           @relation("TaskCreator", fields: [createdById], references: [id])
+
+    @@index([projectId])
+    @@index([status])
+    @@index([priority])
+    @@index([dueDate])
+    @@index([createdById])
+}
+
+model ProjectMember {
+    id       String     @id @default(cuid())
+    role     MemberRole @default(MEMBER)
+    joinedAt DateTime   @default(now())
+
+    // Relations
+    projectId String
+    project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    userId    String
+    user      User    @relation("ProjectMembership", fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([projectId, userId])
+    @@index([userId])
+}
+
+model TaskAssignee {
+    id         String   @id @default(cuid())
+    assignedAt DateTime @default(now())
+
+    // Relations
+    taskId String
+    task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+    userId String
+    user   User   @relation("TaskAssignment", fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([taskId, userId])
+    @@index([userId])
+}
+
+model Comment {
+    id        String   @id @default(cuid())
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    taskId   String
+    task     Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+    authorId String
+    author   User   @relation("CommentAuthor", fields: [authorId], references: [id])
+
+    @@index([taskId])
+    @@index([authorId])
+}
+
+model Attachment {
+    id           String   @id @default(cuid())
+    filename     String
+    originalName String
+    mimeType     String
+    size         Int
+    url          String
+    createdAt    DateTime @default(now())
+
+    // Relations
+    taskId       String
+    task         Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+    uploadedById String
+    uploadedBy   User   @relation("AttachmentUploader", fields: [uploadedById], references: [id])
+
+    @@index([taskId])
+    @@index([uploadedById])
+}
+
+// Necessary for Next auth
+model Account {
+    id                       String  @id @default(cuid())
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String? // @db.Text
+    access_token             String? // @db.Text
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String? // @db.Text
+    session_state            String?
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    refresh_token_expires_in Int?
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+
+    // Task Manager Relations
+    ownedProjects      Project[]       @relation("ProjectOwner")
+    projectMemberships ProjectMember[] @relation("ProjectMembership")
+    createdTasks       Task[]          @relation("TaskCreator")
+    assignedTasks      TaskAssignee[]  @relation("TaskAssignment")
+    comments           Comment[]       @relation("CommentAuthor")
+    attachments        Attachment[]    @relation("AttachmentUploader")
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
