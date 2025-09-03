@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "~/server/db";
 
@@ -10,7 +10,7 @@ const signupSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await request.json() as unknown;
     const { name, email, password } = signupSchema.parse(body);
 
     // Check if user already exists
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     if (error instanceof z.ZodError) {
       console.error("Validation error:", error.errors);
       return NextResponse.json(
-        { error: error.errors[0]?.message || "Validation error" },
+        { error: error.errors[0]?.message ?? "Validation error" },
         { status: 400 }
       );
     }

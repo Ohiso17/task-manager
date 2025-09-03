@@ -67,7 +67,7 @@ export function TaskList({
       )}
       <div className="flex w-full flex-col gap-2">
         {displayTasks.map((task: Task) => (
-          <TaskItem key={task.id} task={task} onEdit={() => {}} />
+          <TaskItem key={task.id} task={task} />
         ))}
       </div>
       {limit && filteredTasks.length > limit && (

@@ -7,17 +7,19 @@ import { TaskForm } from "./task-form";
 import { ProjectForm } from "./project-form";
 import { AuthButton } from "./auth-button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+import { type RouterOutputs } from "~/trpc/react";
 
 interface ProjectDetailProps {
   projectId: string;
 }
 
 export function ProjectDetail({ projectId }: ProjectDetailProps) {
-  const router = useRouter();
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [showProjectForm, setShowProjectForm] = useState(false);
-  const [editingTask, setEditingTask] = useState<any>(null);
+  const [editingTask, setEditingTask] = useState<
+    RouterOutputs["task"]["getAll"][0] | undefined
+  >(undefined);
 
   const { data: project, isLoading } = api.project.getById.useQuery({
     id: projectId,
@@ -55,12 +57,12 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
 
   const handleTaskSuccess = () => {
     setShowTaskForm(false);
-    setEditingTask(null);
+    setEditingTask(undefined);
   };
 
   const handleTaskCancel = () => {
     setShowTaskForm(false);
-    setEditingTask(null);
+    setEditingTask(undefined);
   };
 
   const handleProjectSuccess = () => {
@@ -71,7 +73,7 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
     setShowProjectForm(false);
   };
 
-  const handleEditTask = (task: any) => {
+  const handleEditTask = (task: RouterOutputs["task"]["getAll"][0]) => {
     setEditingTask(task);
     setShowTaskForm(true);
   };

@@ -41,10 +41,10 @@ export function SignupForm() {
         }),
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as { error?: string };
 
       if (!response.ok) {
-        setError(data.error || "Something went wrong");
+        setError(data.error ?? "Something went wrong");
         return;
       }
 

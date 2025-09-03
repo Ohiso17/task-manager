@@ -108,16 +108,26 @@ export const taskRouter = createTRPCRouter({
         throw new Error("Task not found");
       }
 
+      // Prepare update data with proper typing
+      const dataToUpdate: {
+        title?: string;
+        description?: string;
+        priority?: "LOW" | "MEDIUM" | "HIGH";
+        dueDate?: Date;
+        status?: "TODO" | "IN_PROGRESS" | "DONE";
+        completedAt?: Date | null;
+      } = { ...updateData };
+
       // If marking as done, set completedAt
       if (input.status === "DONE" && existingTask.status !== "DONE") {
-        updateData.completedAt = new Date();
+        dataToUpdate.completedAt = new Date();
       } else if (input.status !== "DONE" && existingTask.status === "DONE") {
-        updateData.completedAt = null;
+        dataToUpdate.completedAt = null;
       }
 
       return ctx.db.task.update({
         where: { id },
-        data: updateData,
+        data: dataToUpdate,
         include: {
           project: true,
         },
@@ -166,7 +176,10 @@ export const taskRouter = createTRPCRouter({
         throw new Error("Task not found");
       }
 
-      const updateData: any = { status: input.status };
+      const updateData: {
+        status: "TODO" | "IN_PROGRESS" | "DONE";
+        completedAt?: Date | null;
+      } = { status: input.status };
       
       // Set completedAt when marking as done
       if (input.status === "DONE" && existingTask.status !== "DONE") {
