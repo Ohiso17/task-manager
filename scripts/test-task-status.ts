@@ -6,7 +6,7 @@ async function testTaskStatus() {
   console.log("🧪 Testing task status functionality...");
 
   try {
-    // Find a demo task
+    // Find a sample task
     const task = await prisma.task.findFirst({
       where: {
         title: {
@@ -19,7 +19,7 @@ async function testTaskStatus() {
     });
 
     if (!task) {
-      console.log("❌ No demo task found. Please run the seed script first.");
+      console.log("❌ No sample task found. Please run the seed script first.");
       return;
     }
 

@@ -9,9 +9,10 @@ import { Analytics } from "@vercel/analytics/next";
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
-  title: "Task Manager",
-  description: "A modern task management application built with T3 stack",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  title: "TaskFlow",
+  description:
+    "A modern task management application that flows with your productivity",
+  icons: [{ rel: "icon", url: "/favicon.svg" }],
 };
 
 const geist = Geist({

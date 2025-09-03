@@ -21,12 +21,9 @@ Generate a random secret key:
 openssl rand -base64 32
 ```
 
-## Demo User
+## User Account
 
-A demo user has been created for testing:
-
-- **Email**: test@example.com
-- **Password**: password123
+Create your account through the signup form to get started.
 
 ## Features Implemented:
 
@@ -63,7 +60,7 @@ A demo user has been created for testing:
 2. Visit `http://localhost:3000`
 3. Click "Get Started" to go to auth page
 4. **Sign Up**: Create a new account with your name, email, and password
-5. **Sign In**: Use demo credentials: test@example.com / password123
+5. **Sign In**: Use your account credentials to sign in
 6. You'll be redirected to the dashboard
 7. Test sign out functionality
 
@@ -72,4 +69,4 @@ A demo user has been created for testing:
 - Fill out the signup form with your name, email, and password
 - Password must be at least 6 characters
 - System will automatically sign you in after successful registration
-- New users can use any password (currently accepts "password" for new signups)
+- New users must use a password with at least 6 characters

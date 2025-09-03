@@ -1,0 +1,29 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Logo icon - stylized "T" with flow lines -->
+  <circle cx="30" cy="30" r="25" fill="url(#logoGradient)" />
+  
+  <!-- Main "T" shape -->
+  <rect x="20" y="15" width="20" height="4" rx="2" fill="white" />
+  <rect x="28" y="15" width="4" height="20" rx="2" fill="white" />
+  
+  <!-- Flow lines -->
+  <path d="M45 25 Q55 20 65 25 Q75 30 85 25" stroke="url(#textGradient)" stroke-width="2" fill="none" stroke-linecap="round" />
+  <path d="M45 35 Q55 30 65 35 Q75 40 85 35" stroke="url(#textGradient)" stroke-width="2" fill="none" stroke-linecap="round" />
+  <path d="M45 45 Q55 40 65 45 Q75 50 85 45" stroke="url(#textGradient)" stroke-width="2" fill="none" stroke-linecap="round" />
+  
+  <!-- TaskFlow text -->
+  <text x="95" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="url(#textGradient)">Task</text>
+  <text x="95" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="url(#textGradient)">Flow</text>
+</svg>

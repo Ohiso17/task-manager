@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { LoginForm } from "~/app/_components/login-form";
 import { SignupForm } from "~/app/_components/signup-form";
 
@@ -37,13 +38,23 @@ export default function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-900 to-blue-900">
       <div className="w-full max-w-md space-y-8 rounded-xl bg-white/10 p-8 backdrop-blur-sm">
         <div className="text-center">
+          {/* TaskFlow Logo */}
+          <div className="mb-4 flex justify-center">
+            <Image
+              src="/logo.svg"
+              alt="TaskFlow"
+              width={150}
+              height={48}
+              className="h-12 w-auto"
+            />
+          </div>
           <h1 className="text-3xl font-bold text-white">
-            Welcome to Task Manager
+            Welcome to <span className="text-blue-400">TaskFlow</span>
           </h1>
           <p className="mt-2 text-white/70">
             {isLogin
-              ? "Sign in to manage your tasks"
-              : "Create your account to get started"}
+              ? "Sign in to start flowing with your productivity"
+              : "Create your account and let productivity flow"}
           </p>
         </div>
 
@@ -72,14 +83,6 @@ export default function AuthPage() {
         </div>
 
         {isLogin ? <LoginForm /> : <SignupForm />}
-
-        {isLogin && (
-          <div className="text-center">
-            <p className="text-sm text-white/60">
-              Demo credentials: test@example.com / password123
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

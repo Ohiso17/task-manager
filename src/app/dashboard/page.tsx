@@ -7,6 +7,7 @@ import { DashboardStats } from "~/app/_components/dashboard-stats";
 import { UpcomingTasks } from "~/app/_components/upcoming-tasks";
 import { api, HydrateClient } from "~/trpc/server";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function Dashboard() {
   const session = await auth();
@@ -27,13 +28,22 @@ export default async function Dashboard() {
         <div className="container mx-auto px-4 py-8">
           {/* Header */}
           <div className="mb-8 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white">
-                Welcome back, {session.user.name}!
-              </h1>
-              <p className="text-white/70">
-                Manage your tasks and stay organized
-              </p>
+            <div className="flex items-center gap-4">
+              <Image
+                src="/logo.svg"
+                alt="TaskFlow"
+                width={125}
+                height={40}
+                className="h-10 w-auto"
+              />
+              <div>
+                <h1 className="text-3xl font-bold text-white">
+                  Welcome back, {session.user.name}!
+                </h1>
+                <p className="text-white/70">
+                  Let your productivity flow with TaskFlow
+                </p>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
               <AuthButton />

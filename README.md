@@ -1,6 +1,6 @@
-# Task Manager App
+# TaskFlow
 
-A modern, full-featured task management application built with the T3 Stack. Organize your life with projects, tasks, and beautiful UI.
+A modern, full-featured task management application built with the T3 Stack. Where productivity flows naturally - organize your life with projects, tasks, and beautiful UI.
 
 ## ✨ Features
 
@@ -11,36 +11,36 @@ A modern, full-featured task management application built with the T3 Stack. Org
 - **Protected Routes** - Secure access to user data
 - **Session Management** - Persistent login sessions
 
-### 📋 Project Management
+### 📋 Flowing Project Management
 
-- **Create Projects** - Organize tasks into color-coded projects
-- **Edit Projects** - Update project details and colors
+- **Create Projects** - Organize tasks into color-coded flowing projects
+- **Edit Projects** - Update project details and colors seamlessly
 - **Delete Projects** - Remove projects (with confirmation)
-- **Project Overview** - View project statistics and task counts
+- **Project Overview** - View project statistics and task flow counts
 
-### ✅ Task Management
+### ✅ Flowing Task Management
 
 - **Create Tasks** - Add tasks with titles, descriptions, priorities, and due dates
-- **Edit Tasks** - Update task details and properties
+- **Edit Tasks** - Update task details and properties with smooth flow
 - **Delete Tasks** - Remove tasks with confirmation
 - **Status Management** - Mark tasks as TODO, IN_PROGRESS, or DONE
 - **Priority Levels** - Set task priorities (LOW, MEDIUM, HIGH)
-- **Due Dates** - Track task deadlines
+- **Due Dates** - Track task deadlines and flow
 - **Task Completion** - Automatic completion timestamps
 
-### 📊 Dashboard
+### 📊 Flowing Dashboard
 
-- **Real-time Statistics** - Live project and task counts
-- **Recent Activity** - Quick view of latest tasks and projects
-- **Quick Actions** - Fast access to create new items
-- **Progress Tracking** - Visual progress indicators
+- **Real-time Statistics** - Live project and task flow counts
+- **Recent Activity** - Quick view of latest tasks and projects flowing through
+- **Quick Actions** - Fast access to create new items with smooth flow
+- **Progress Tracking** - Visual progress indicators showing your flow
 
-### 🎨 User Experience
+### 🎨 Flowing User Experience
 
-- **Modern UI** - Beautiful dark theme with glassmorphism effects
-- **Responsive Design** - Works perfectly on desktop and mobile
-- **Intuitive Navigation** - Easy movement between projects and tasks
-- **Real-time Updates** - Instant UI updates with optimistic mutations
+- **Modern UI** - Beautiful dark theme with glassmorphism effects that flow
+- **Responsive Design** - Works perfectly on desktop and mobile with smooth flow
+- **Intuitive Navigation** - Easy movement between projects and tasks that flows naturally
+- **Real-time Updates** - Instant UI updates with optimistic mutations for seamless flow
 
 ## 🛠️ Tech Stack
 
@@ -66,7 +66,7 @@ A modern, full-featured task management application built with the T3 Stack. Org
 
    ```bash
    git clone <your-repo-url>
-   cd task-manager
+   cd taskflow
    ```
 
 2. **Install dependencies**
@@ -80,8 +80,8 @@ A modern, full-featured task management application built with the T3 Stack. Org
 
    ```env
    # Database
-   DATABASE_URL="postgresql://username:password@localhost:5432/taskmanager"
-   DIRECT_URL="postgresql://username:password@localhost:5432/taskmanager"
+   DATABASE_URL="postgresql://username:password@localhost:5432/taskflow"
+   DIRECT_URL="postgresql://username:password@localhost:5432/taskflow"
 
    # NextAuth.js
    AUTH_SECRET="your-secret-key-here"
@@ -111,16 +111,13 @@ A modern, full-featured task management application built with the T3 Stack. Org
 
 ## 📱 Usage
 
-### Demo Account
+### Getting Started
 
-If you seeded demo data, you can use:
-
-- **Email**: `demo@example.com`
-- **Password**: `password123`
+Create your account through the signup form to start using TaskFlow.
 
 ### Creating Your First Project
 
-1. Sign up for a new account or use the demo account
+1. Sign up for a new account
 2. Click "New Project" on the dashboard
 3. Enter project name, description, and choose a color
 4. Click "Create Project"

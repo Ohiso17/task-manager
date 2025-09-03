@@ -6,18 +6,18 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding demo data...");
 
-  // Create demo user if it doesn't exist
-  const demoUser = await prisma.user.upsert({
-    where: { email: "demo@example.com" },
+  // Create sample user if it doesn't exist
+  const sampleUser = await prisma.user.upsert({
+    where: { email: "sample@example.com" },
     update: {},
     create: {
-      name: "Demo User",
-      email: "demo@example.com",
+      name: "Sample User",
+      email: "sample@example.com",
       password: "password123", // In production, this should be hashed
     },
   });
 
-  console.log("✅ Demo user created:", demoUser.email);
+  console.log("✅ Sample user created:", sampleUser.email);
 
   // Create demo projects
   const projects = await Promise.all([
@@ -29,7 +29,7 @@ async function main() {
         name: "Work Tasks",
         description: "Tasks related to my job and career development",
         color: "#3B82F6",
-        userId: demoUser.id,
+        userId: sampleUser.id,
       },
     }),
     prisma.project.upsert({
@@ -40,7 +40,7 @@ async function main() {
         name: "Personal Projects",
         description: "Personal side projects and hobbies",
         color: "#10B981",
-        userId: demoUser.id,
+        userId: sampleUser.id,
       },
     }),
     prisma.project.upsert({
@@ -51,7 +51,7 @@ async function main() {
         name: "Home & Life",
         description: "Household tasks and life management",
         color: "#F59E0B",
-        userId: demoUser.id,
+        userId: sampleUser.id,
       },
     }),
   ]);
@@ -177,9 +177,9 @@ async function main() {
 
   console.log("✅ Demo tasks created:", tasks.length);
 
-  console.log("🎉 Demo data seeding completed!");
-  console.log("\n📋 Demo Account:");
-  console.log("Email: demo@example.com");
+  console.log("🎉 Sample data seeding completed!");
+  console.log("\n📋 Sample Account:");
+  console.log("Email: sample@example.com");
   console.log("Password: password123");
   console.log("\n📊 Created:");
   console.log(`- ${projects.length} projects`);
