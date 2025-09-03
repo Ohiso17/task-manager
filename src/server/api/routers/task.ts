@@ -47,6 +47,30 @@ export const taskRouter = createTRPCRouter({
     return task ?? null;
   }),
 
+  getUpcoming: protectedProcedure.query(async ({ ctx }) => {
+    const tasks = await ctx.db.task.findMany({
+      where: { 
+        project: {
+          userId: ctx.session.user.id
+        },
+        status: {
+          not: "DONE"
+        },
+        dueDate: {
+          not: null,
+          gte: new Date() // Only future due dates
+        }
+      },
+      include: {
+        project: true,
+      },
+      orderBy: { dueDate: "asc" },
+      take: 10,
+    });
+
+    return tasks;
+  }),
+
   create: protectedProcedure
     .input(z.object({ 
       title: z.string().min(1),

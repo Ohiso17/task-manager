@@ -27,12 +27,14 @@ export function ProjectForm({
   const createProject = api.project.create.useMutation({
     onSuccess: () => {
       void utils.project.getAll.invalidate();
+      void utils.project.getStats.invalidate();
       onSuccess?.();
     },
   });
   const updateProject = api.project.update.useMutation({
     onSuccess: () => {
       void utils.project.getAll.invalidate();
+      void utils.project.getStats.invalidate();
       onSuccess?.();
     },
   });

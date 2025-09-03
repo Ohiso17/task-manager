@@ -5,6 +5,7 @@ import { type RouterOutputs } from "~/trpc/react";
 import { TaskItem } from "./task-item";
 
 type Task = RouterOutputs["task"]["getAll"][0];
+type ProjectTask = RouterOutputs["project"]["getById"]["tasks"][0];
 
 interface TaskListProps {
   projectId?: string;
@@ -18,8 +19,12 @@ export function TaskList({
   showProject = true,
 }: TaskListProps) {
   const { data: tasks, isLoading } = api.task.getAll.useQuery();
+  const { data: project } = api.project.getById.useQuery(
+    { id: projectId! },
+    { enabled: !!projectId },
+  );
 
-  if (isLoading) {
+  if (isLoading || (projectId && !project)) {
     return (
       <div className="flex flex-col items-center gap-2 text-white">
         <div className="text-lg">Loading tasks...</div>
@@ -27,7 +32,10 @@ export function TaskList({
     );
   }
 
-  if (!tasks || tasks.length === 0) {
+  if (
+    (!projectId && (!tasks || tasks.length === 0)) ||
+    (projectId && (!project || project.tasks.length === 0))
+  ) {
     return (
       <div className="flex flex-col items-center gap-2 text-white">
         <div className="text-lg">No tasks found</div>
@@ -38,10 +46,9 @@ export function TaskList({
     );
   }
 
-  // Filter tasks by project if projectId is provided
-  const filteredTasks = projectId
-    ? tasks.filter((task) => task.projectId === projectId)
-    : tasks;
+  // Use project tasks if projectId is provided, otherwise use all tasks
+  const filteredTasks: (Task | ProjectTask)[] =
+    projectId && project ? project.tasks : tasks || [];
 
   const displayTasks = limit ? filteredTasks.slice(0, limit) : filteredTasks;
 
@@ -66,7 +73,7 @@ export function TaskList({
         </h3>
       )}
       <div className="flex w-full flex-col gap-2">
-        {displayTasks.map((task: Task) => (
+        {displayTasks.map((task: Task | ProjectTask) => (
           <TaskItem key={task.id} task={task} />
         ))}
       </div>

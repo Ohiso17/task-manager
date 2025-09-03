@@ -6,10 +6,11 @@ import { useState } from "react";
 import { TaskForm } from "./task-form";
 
 type Task = RouterOutputs["task"]["getAll"][0];
+type ProjectTask = RouterOutputs["project"]["getById"]["tasks"][0];
 
 interface TaskItemProps {
-  task: Task;
-  onEdit?: (task: Task) => void;
+  task: Task | ProjectTask;
+  onEdit?: (task: Task | ProjectTask) => void;
 }
 
 export function TaskItem({ task, onEdit }: TaskItemProps) {
@@ -20,7 +21,9 @@ export function TaskItem({ task, onEdit }: TaskItemProps) {
   const updateStatus = api.task.updateStatus.useMutation({
     onSuccess: () => {
       void utils.task.getAll.invalidate();
+      void utils.task.getUpcoming.invalidate();
       void utils.project.getStats.invalidate();
+      void utils.project.getById.invalidate();
       setIsUpdating(false);
     },
     onError: (error) => {
@@ -32,7 +35,9 @@ export function TaskItem({ task, onEdit }: TaskItemProps) {
   const deleteTask = api.task.delete.useMutation({
     onSuccess: () => {
       void utils.task.getAll.invalidate();
+      void utils.task.getUpcoming.invalidate();
       void utils.project.getStats.invalidate();
+      void utils.project.getById.invalidate();
     },
   });
 
@@ -45,9 +50,7 @@ export function TaskItem({ task, onEdit }: TaskItemProps) {
   };
 
   const handleDelete = () => {
-    if (confirm("Are you sure you want to delete this task?")) {
-      deleteTask.mutate({ id: task.id });
-    }
+    deleteTask.mutate({ id: task.id });
   };
 
   const handleEdit = () => {

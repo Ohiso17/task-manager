@@ -40,7 +40,10 @@ export const projectRouter = createTRPCRouter({
         },
         include: {
           tasks: {
-            orderBy: { order: "asc" }
+            orderBy: [
+              { dueDate: "asc" },
+              { createdAt: "asc" }
+            ]
           }
         }
       });
@@ -134,9 +137,6 @@ export const projectRouter = createTRPCRouter({
     });
 
     const totalTasks = projects.reduce((sum, project) => sum + project.tasks.length, 0);
-    const completedTasks = projects.reduce((sum, project) => 
-      sum + project.tasks.filter(task => task.status === "DONE").length, 0
-    );
     const inProgressTasks = projects.reduce((sum, project) => 
       sum + project.tasks.filter(task => task.status === "IN_PROGRESS").length, 0
     );
@@ -156,7 +156,6 @@ export const projectRouter = createTRPCRouter({
     return {
       totalProjects: projects.length,
       totalTasks,
-      completedTasks,
       inProgressTasks,
       completedThisWeek,
     };

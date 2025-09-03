@@ -15,18 +15,15 @@ export function ProjectList() {
   const deleteProject = api.project.delete.useMutation({
     onSuccess: () => {
       void utils.project.getAll.invalidate();
+      void utils.project.getStats.invalidate();
+      void utils.task.getAll.invalidate();
+      void utils.task.getUpcoming.invalidate();
       setDeleteProjectId(null);
     },
   });
 
   const handleDelete = (projectId: string) => {
-    if (
-      confirm(
-        "Are you sure you want to delete this project? All tasks in this project will also be deleted.",
-      )
-    ) {
-      deleteProject.mutate({ id: projectId });
-    }
+    deleteProject.mutate({ id: projectId });
   };
 
   if (isLoading) {
@@ -51,9 +48,10 @@ export function ProjectList() {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project: Project) => (
-        <div
+        <Link
           key={project.id}
-          className="rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-colors hover:bg-white/20"
+          href={`/projects/${project.id}`}
+          className="block rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-colors hover:bg-white/20"
         >
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
@@ -66,7 +64,11 @@ export function ProjectList() {
               </h3>
             </div>
             <button
-              onClick={() => handleDelete(project.id)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleDelete(project.id);
+              }}
               className="text-red-400 transition-colors hover:text-red-300"
               disabled={deleteProject.isPending}
             >
@@ -85,14 +87,8 @@ export function ProjectList() {
               {project._count.tasks}{" "}
               {project._count.tasks === 1 ? "task" : "tasks"}
             </div>
-            <Link
-              href={`/projects/${project.id}`}
-              className="rounded-md bg-blue-600 px-3 py-1 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-            >
-              View
-            </Link>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

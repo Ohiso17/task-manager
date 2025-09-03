@@ -40,7 +40,9 @@ export function TaskForm({
   const createTask = api.task.create.useMutation({
     onSuccess: () => {
       void utils.task.getAll.invalidate();
+      void utils.task.getUpcoming.invalidate();
       void utils.project.getStats.invalidate();
+      void utils.project.getById.invalidate();
       onSuccess?.();
     },
   });
@@ -48,7 +50,9 @@ export function TaskForm({
   const updateTask = api.task.update.useMutation({
     onSuccess: () => {
       void utils.task.getAll.invalidate();
+      void utils.task.getUpcoming.invalidate();
       void utils.project.getStats.invalidate();
+      void utils.project.getById.invalidate();
       onSuccess?.();
     },
   });

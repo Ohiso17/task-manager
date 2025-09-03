@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "~/trpc/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TaskList } from "./task";
 import { TaskForm } from "./task-form";
 import { ProjectForm } from "./project-form";
@@ -21,9 +21,31 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
     RouterOutputs["task"]["getAll"][0] | undefined
   >(undefined);
 
-  const { data: project, isLoading } = api.project.getById.useQuery({
-    id: projectId,
-  });
+  const {
+    data: project,
+    isLoading,
+    isFetching,
+    refetch,
+  } = api.project.getById.useQuery(
+    {
+      id: projectId,
+    },
+    {
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      staleTime: 0, // Always consider data stale to ensure fresh updates
+    },
+  );
+
+  // Listen for focus events to refresh data when user returns to tab
+  useEffect(() => {
+    const handleFocus = () => {
+      void refetch();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
+  }, [refetch]);
 
   if (isLoading) {
     return (
@@ -114,20 +136,41 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
 
         {/* Project Stats */}
         <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-lg bg-white/10 p-6 backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-white">Total Tasks</h3>
+          <div
+            className={`rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-opacity ${isFetching ? "opacity-75" : ""}`}
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">Total Tasks</h3>
+              {isFetching && (
+                <div className="h-2 w-2 animate-pulse rounded-full bg-blue-400"></div>
+              )}
+            </div>
             <p className="text-2xl font-bold text-white">
               {project.tasks.length}
             </p>
           </div>
-          <div className="rounded-lg bg-white/10 p-6 backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-white">Completed</h3>
+          <div
+            className={`rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-opacity ${isFetching ? "opacity-75" : ""}`}
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">Completed</h3>
+              {isFetching && (
+                <div className="h-2 w-2 animate-pulse rounded-full bg-blue-400"></div>
+              )}
+            </div>
             <p className="text-2xl font-bold text-green-400">
               {project.tasks.filter((task) => task.status === "DONE").length}
             </p>
           </div>
-          <div className="rounded-lg bg-white/10 p-6 backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-white">In Progress</h3>
+          <div
+            className={`rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-opacity ${isFetching ? "opacity-75" : ""}`}
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">In Progress</h3>
+              {isFetching && (
+                <div className="h-2 w-2 animate-pulse rounded-full bg-blue-400"></div>
+              )}
+            </div>
             <p className="text-2xl font-bold text-yellow-400">
               {
                 project.tasks.filter((task) => task.status === "IN_PROGRESS")

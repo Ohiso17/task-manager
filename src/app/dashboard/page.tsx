@@ -4,6 +4,7 @@ import { TaskList } from "~/app/_components/task";
 import { ProjectList } from "~/app/_components/project-list";
 import { AuthButton } from "~/app/_components/auth-button";
 import { DashboardStats } from "~/app/_components/dashboard-stats";
+import { UpcomingTasks } from "~/app/_components/upcoming-tasks";
 import { api, HydrateClient } from "~/trpc/server";
 import Link from "next/link";
 
@@ -17,6 +18,7 @@ export default async function Dashboard() {
   // Prefetch user's data
   void api.project.getStats.prefetch();
   void api.task.getAll.prefetch();
+  void api.task.getUpcoming.prefetch();
   void api.project.getAll.prefetch();
 
   return (
@@ -34,15 +36,6 @@ export default async function Dashboard() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <p className="text-sm text-white/60">Signed in as</p>
-                <p className="font-medium text-white">{session.user.email}</p>
-              </div>
-              <img
-                src={session.user.image ?? "/default-avatar.png"}
-                alt="Profile"
-                className="h-10 w-10 rounded-full"
-              />
               <AuthButton />
             </div>
           </div>
@@ -80,6 +73,22 @@ export default async function Dashboard() {
               </Link>
             </div>
             <ProjectList />
+          </div>
+
+          {/* Upcoming Tasks */}
+          <div className="mb-8 rounded-lg bg-white/10 p-6 backdrop-blur-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white">
+                Upcoming Tasks
+              </h2>
+              <Link
+                href="/tasks"
+                className="text-blue-400 transition-colors hover:text-blue-300"
+              >
+                View All
+              </Link>
+            </div>
+            <UpcomingTasks />
           </div>
 
           {/* Recent Tasks */}
