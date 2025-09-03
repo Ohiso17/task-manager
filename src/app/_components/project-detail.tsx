@@ -95,11 +95,6 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
     setShowProjectForm(false);
   };
 
-  const handleEditTask = (task: RouterOutputs["task"]["getAll"][0]) => {
-    setEditingTask(task);
-    setShowTaskForm(true);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-blue-900">
       <div className="container mx-auto px-4 py-8">

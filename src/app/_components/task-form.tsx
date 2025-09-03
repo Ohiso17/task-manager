@@ -4,12 +4,12 @@ import { api } from "~/trpc/react";
 import { useState } from "react";
 import { type RouterOutputs } from "~/trpc/react";
 
-type Project = RouterOutputs["project"]["getAll"][0];
 type Task = RouterOutputs["task"]["getAll"][0];
+type ProjectTask = RouterOutputs["project"]["getById"]["tasks"][0];
 
 interface TaskFormProps {
   projectId?: string;
-  task?: Task;
+  task?: Task | ProjectTask;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
@@ -34,7 +34,6 @@ export function TaskForm({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { data: projects } = api.project.getAll.useQuery();
   const utils = api.useUtils();
 
   const createTask = api.task.create.useMutation({

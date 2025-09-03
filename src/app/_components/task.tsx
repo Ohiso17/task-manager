@@ -16,7 +16,7 @@ interface TaskListProps {
 export function TaskList({
   projectId,
   limit,
-  showProject = true,
+  showProject: _showProject = true,
 }: TaskListProps) {
   const { data: tasks, isLoading } = api.task.getAll.useQuery();
   const { data: project } = api.project.getById.useQuery(
@@ -48,7 +48,7 @@ export function TaskList({
 
   // Use project tasks if projectId is provided, otherwise use all tasks
   const filteredTasks: (Task | ProjectTask)[] =
-    projectId && project ? project.tasks : tasks || [];
+    projectId && project ? project.tasks : tasks ?? [];
 
   const displayTasks = limit ? filteredTasks.slice(0, limit) : filteredTasks;
 
