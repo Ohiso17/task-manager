@@ -4,6 +4,7 @@ import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </SessionProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
