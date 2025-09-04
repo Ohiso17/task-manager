@@ -51,15 +51,15 @@ export function ProjectList() {
         <Link
           key={project.id}
           href={`/projects/${project.id}`}
-          className="block rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-colors hover:bg-white/20"
+          className="block overflow-hidden rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-colors hover:bg-white/20"
         >
           <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 flex-1 items-center gap-3">
               <div
-                className="h-4 w-4 rounded-full"
+                className="h-4 w-4 flex-shrink-0 rounded-full"
                 style={{ backgroundColor: project.color ?? "#3B82F6" }}
               />
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="truncate text-lg font-semibold text-white">
                 {project.name}
               </h3>
             </div>
@@ -79,7 +79,9 @@ export function ProjectList() {
           </div>
 
           {project.description && (
-            <p className="mt-2 text-sm text-white/70">{project.description}</p>
+            <p className="mt-2 line-clamp-2 text-sm text-white/70">
+              {project.description}
+            </p>
           )}
 
           <div className="mt-4 flex items-center justify-between">

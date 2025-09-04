@@ -97,7 +97,13 @@ export function TaskItem({ task, onEdit }: TaskItemProps) {
 
   const formatDate = (date: Date | string | null) => {
     if (!date) return null;
-    return new Date(date).toLocaleDateString();
+    // Ensure we're working with a proper date and format it consistently
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   const isOverdue =
@@ -107,12 +113,12 @@ export function TaskItem({ task, onEdit }: TaskItemProps) {
 
   return (
     <div
-      className={`rounded-lg bg-white/10 p-4 transition-colors hover:bg-white/20 ${
+      className={`overflow-hidden rounded-lg bg-white/10 p-4 transition-colors hover:bg-white/20 ${
         task.status === "DONE" ? "opacity-75" : ""
       }`}
     >
       <div className="flex items-start justify-between">
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-3">
             <input
               type="checkbox"
@@ -121,10 +127,10 @@ export function TaskItem({ task, onEdit }: TaskItemProps) {
                 handleStatusChange(e.target.checked ? "DONE" : "TODO")
               }
               disabled={isUpdating}
-              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              className="h-4 w-4 flex-shrink-0 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
             />
             <h4
-              className={`font-semibold ${task.status === "DONE" ? "text-white/60 line-through" : "text-white"}`}
+              className={`truncate font-semibold ${task.status === "DONE" ? "text-white/60 line-through" : "text-white"}`}
             >
               {task.title}
             </h4>
@@ -132,7 +138,7 @@ export function TaskItem({ task, onEdit }: TaskItemProps) {
 
           {task.description && (
             <p
-              className={`mt-1 text-sm ${task.status === "DONE" ? "text-white/50" : "text-white/70"}`}
+              className={`mt-1 line-clamp-2 text-sm ${task.status === "DONE" ? "text-white/50" : "text-white/70"}`}
             >
               {task.description}
             </p>

@@ -29,7 +29,7 @@ export function TaskForm({
     task?.status ?? "TODO",
   );
   const [dueDate, setDueDate] = useState(
-    task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
+    task?.dueDate ? new Date(task.dueDate).toLocaleDateString("en-CA") : "",
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -67,7 +67,7 @@ export function TaskForm({
         description: description || undefined,
         priority,
         status,
-        dueDate: dueDate ? new Date(dueDate) : undefined,
+        dueDate: dueDate ? new Date(dueDate + "T00:00:00") : undefined,
       };
 
       if (task) {

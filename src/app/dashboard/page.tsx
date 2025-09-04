@@ -36,8 +36,8 @@ export default async function Dashboard() {
                 height={40}
                 className="h-10 w-auto"
               />
-              <div>
-                <h1 className="text-3xl font-bold text-white">
+              <div className="min-w-0 flex-1">
+                <h1 className="truncate text-3xl font-bold text-white">
                   Welcome back, {session.user.name}!
                 </h1>
                 <p className="text-white/70">

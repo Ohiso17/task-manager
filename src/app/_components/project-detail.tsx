@@ -105,10 +105,14 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
               className="h-6 w-6 rounded-full"
               style={{ backgroundColor: project.color ?? "#3B82F6" }}
             />
-            <div>
-              <h1 className="text-3xl font-bold text-white">{project.name}</h1>
+            <div className="min-w-0 flex-1">
+              <h1 className="truncate text-3xl font-bold text-white">
+                {project.name}
+              </h1>
               {project.description && (
-                <p className="text-white/70">{project.description}</p>
+                <p className="line-clamp-2 text-white/70">
+                  {project.description}
+                </p>
               )}
             </div>
           </div>
